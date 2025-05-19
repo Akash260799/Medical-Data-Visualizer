@@ -9,7 +9,7 @@ import numpy as np
 df = pd.read_csv('medical_examination.csv')
 
 # 2. Add overweight column
-# BMI = weight (kg) / (height (m))^2
+    # BMI = weight (kg) / (height (m))^2
 bmi = df['weight'] / ((df['height'] / 100) ** 2)
 df['overweight'] = (bmi > 25).astype(int)
 
@@ -18,17 +18,17 @@ df['cholesterol'] = df['cholesterol'].apply(lambda x: 0 if x == 1 else 1)
 df['gluc'] = df['gluc'].apply(lambda x: 0 if x == 1 else 1)
 
 def draw_cat_plot():
-    # 4. Create DataFrame for cat plot
+# 4. Create DataFrame for cat plot
     df_cat = pd.melt(df,
                      id_vars=['cardio'],
                      value_vars=['cholesterol', 'gluc', 'smoke', 'alco', 'active', 'overweight'])
     
-    # 5. Group and reformat data
+# 5. Group and reformat data
     df_cat = df_cat.groupby(['cardio', 'variable', 'value']) \
                    .size() \
                    .reset_index(name='total')
 
-    # 6. Draw the catplot
+# 6. Draw the catplot
     fig = sns.catplot(
         x='variable', y='total', hue='value', col='cardio',
         data=df_cat, kind='bar'
@@ -37,7 +37,7 @@ def draw_cat_plot():
     return fig
 
 def draw_heat_map():
-    # 7. Clean the data
+# 7. Clean the data
     df_heat = df[
         (df['ap_lo'] <= df['ap_hi']) &
         (df['height'] >= df['height'].quantile(0.025)) &
@@ -46,16 +46,16 @@ def draw_heat_map():
         (df['weight'] <= df['weight'].quantile(0.975))
     ]
 
-    # 8. Calculate correlation matrix
+# 8. Calculate correlation matrix
     corr = df_heat.corr()
 
-    # 9. Generate mask for upper triangle
+# 9. Generate mask for upper triangle
     mask = np.triu(np.ones_like(corr, dtype=bool))
 
-    # 10. Set up matplotlib figure
+# 10. Set up matplotlib figure
     fig, ax = plt.subplots(figsize=(12, 10))
 
-    # 11. Draw heatmap
+# 11. Draw heatmap
     sns.heatmap(
         corr,
         annot=True,
